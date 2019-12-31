@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Authors")
+@Table(name = "authors")
 public class Author
 {
     @Id
@@ -20,8 +20,9 @@ public class Author
     private Long authorId;
     private String firstName;
     private String lastName;
+
     @OneToMany
-    private List<Post> posts;
+    private List<Article> articles;
 
     public Long getAuthorId() {
         return authorId;
@@ -47,12 +48,12 @@ public class Author
         this.lastName = lastName;
     }
 
-    public List<Post> getPosts() {
-        return posts;
+    public List<Article> getArticles() {
+        return articles;
     }
 
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
+    public void setArticles(List<Article> articles) {
+        this.articles = articles;
     }
 
     @Override
@@ -76,7 +77,7 @@ public class Author
                 "authorId=" + authorId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", posts=" + posts +
+                ", articles=" + articles +
                 '}';
     }
 }

@@ -1,9 +1,20 @@
 package com.hamidur.springBootCRUDRESTfulWebservices.dbModels;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Objects;
 
+@Entity
+@Table(name = "comments")
 public class Comment
 {
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
     private String comment;
 

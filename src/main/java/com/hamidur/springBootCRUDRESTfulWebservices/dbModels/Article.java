@@ -6,19 +6,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Table(name = "Posts")
-public class Post implements Serializable
+@Table(name = "articles")
+public class Article implements Serializable
 {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long postId;
+    private Long articleId;
     private String title;
     private String body;
     private LocalDate publishedDate;
@@ -26,12 +28,15 @@ public class Post implements Serializable
     @ManyToOne
     private Author author;
 
-    public Long getPostId() {
-        return postId;
+    @OneToMany
+    private List<Comment> comments;
+
+    public Long getArticleId() {
+        return articleId;
     }
 
-    public void setPostId(Long postId) {
-        this.postId = postId;
+    public void setArticleId(Long articleId) {
+        this.articleId = articleId;
     }
 
     public String getTitle() {
@@ -66,14 +71,40 @@ public class Post implements Serializable
         this.author = author;
     }
 
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Article)) return false;
+        Article article = (Article) o;
+        return Objects.equals(getArticleId(), article.getArticleId()) &&
+                Objects.equals(getTitle(), article.getTitle()) &&
+                Objects.equals(getBody(), article.getBody()) &&
+                Objects.equals(getPublishedDate(), article.getPublishedDate()) &&
+                Objects.equals(getAuthor(), article.getAuthor());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getArticleId(), getTitle(), getBody(), getPublishedDate(), getAuthor().getFirstName());
+    }
+
     @Override
     public String toString() {
-        return "Post{" +
-                "postId=" + postId +
+        return "Article{" +
+                "articleId=" + articleId +
                 ", title='" + title + '\'' +
                 ", body='" + body + '\'' +
                 ", publishedDate=" + publishedDate +
                 ", author=" + author.getAuthorId() +
+                ", comments=" + comments +
                 '}';
     }
 }
