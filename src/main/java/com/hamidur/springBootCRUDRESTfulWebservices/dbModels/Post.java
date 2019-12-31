@@ -1,17 +1,25 @@
 package com.hamidur.springBootCRUDRESTfulWebservices.dbModels;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
+import java.time.LocalDate;
 
-public class Post
+@Entity
+@Table
+public class Post implements Serializable
 {
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
     private String title;
     private String body;
-    private Date publishedDate;
-    private Author author;
-    private List<Comment> comments;
+    private LocalDate publishedDate;
 
     public Long getPostId() {
         return postId;
@@ -37,55 +45,11 @@ public class Post
         this.body = body;
     }
 
-    public Date getPublishedDate() {
+    public LocalDate getPublishedDate() {
         return publishedDate;
     }
 
-    public void setPublishedDate(Date publishedDate) {
+    public void setPublishedDate(LocalDate publishedDate) {
         this.publishedDate = publishedDate;
-    }
-
-    public Author getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(Author author) {
-        this.author = author;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Post)) return false;
-        Post post = (Post) o;
-        return Objects.equals(getPostId(), post.getPostId()) &&
-                Objects.equals(getTitle(), post.getTitle()) &&
-                Objects.equals(getPublishedDate(), post.getPublishedDate()) &&
-                Objects.equals(getAuthor(), post.getAuthor());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getPostId(), getTitle(), getPublishedDate(), getAuthor());
-    }
-
-    @Override
-    public String toString() {
-        return "Post{" +
-                "postId=" + postId +
-                ", title='" + title + '\'' +
-                ", body='" + body + '\'' +
-                ", publishedDate=" + publishedDate +
-                ", author=" + author.getAuthorId() +
-                ", comments=" + comments +
-                '}';
     }
 }
