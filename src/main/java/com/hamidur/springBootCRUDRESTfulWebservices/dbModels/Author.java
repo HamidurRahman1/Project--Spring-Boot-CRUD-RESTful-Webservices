@@ -1,13 +1,26 @@
 package com.hamidur.springBootCRUDRESTfulWebservices.dbModels;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "Authors")
 public class Author
 {
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long authorId;
     private String firstName;
     private String lastName;
+    @OneToMany
     private List<Post> posts;
 
     public Long getAuthorId() {

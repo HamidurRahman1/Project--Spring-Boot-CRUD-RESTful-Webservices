@@ -5,12 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
-@Table
+@Table(name = "Posts")
 public class Post implements Serializable
 {
     @Id
@@ -20,6 +22,9 @@ public class Post implements Serializable
     private String title;
     private String body;
     private LocalDate publishedDate;
+
+    @ManyToOne
+    private Author author;
 
     public Long getPostId() {
         return postId;
@@ -51,5 +56,24 @@ public class Post implements Serializable
 
     public void setPublishedDate(LocalDate publishedDate) {
         this.publishedDate = publishedDate;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "postId=" + postId +
+                ", title='" + title + '\'' +
+                ", body='" + body + '\'' +
+                ", publishedDate=" + publishedDate +
+                ", author=" + author.getAuthorId() +
+                '}';
     }
 }

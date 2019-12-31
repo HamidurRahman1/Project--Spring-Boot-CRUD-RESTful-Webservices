@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class PostService
@@ -16,15 +17,12 @@ public class PostService
 
     public Post getPostById(Long postId)
     {
-        return postRepository.findById(postId).get();
+        Optional<Post> post = postRepository.findById(postId);
+        return post.isPresent() ? post.get() : null;
     }
 
     public void insertPost(Post post)
     {
-        Post post1 = new Post();
-        post1.setTitle("title1");
-        post1.setBody("body1");
-        post1.setPublishedDate(LocalDate.of(2019, 12, 30));
-        postRepository.save(post1);
+        postRepository.save(post);
     }
 }
