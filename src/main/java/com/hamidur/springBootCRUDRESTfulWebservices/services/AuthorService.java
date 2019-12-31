@@ -23,4 +23,9 @@ public class AuthorService
     {
         return authorRepository.save(author);
     }
+
+    public void updateAuthor(Author author)
+    {
+        authorRepository.save(author);
+    }
 }

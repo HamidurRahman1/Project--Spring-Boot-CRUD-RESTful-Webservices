@@ -1,6 +1,7 @@
 package com.hamidur.springBootCRUDRESTfulWebservices.services;
 
 import com.hamidur.springBootCRUDRESTfulWebservices.dbModels.Article;
+import com.hamidur.springBootCRUDRESTfulWebservices.dbModels.Comment;
 import com.hamidur.springBootCRUDRESTfulWebservices.repositories.ArticleRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,10 @@ public class ArticleService
     public Article insertArticle(Article article)
     {
         return articleRepository.save(article);
+    }
+
+    public void updateArticle(Article retrievedArticle)
+    {
+        articleRepository.save(retrievedArticle);
     }
 }

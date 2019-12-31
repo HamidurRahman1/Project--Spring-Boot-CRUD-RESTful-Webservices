@@ -1,5 +1,6 @@
 package com.hamidur.springBootCRUDRESTfulWebservices.dbModels;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,10 +26,9 @@ public class Article implements Serializable
     private String body;
     private LocalDate publishedDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     private Author author;
-
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     public Long getArticleId() {
