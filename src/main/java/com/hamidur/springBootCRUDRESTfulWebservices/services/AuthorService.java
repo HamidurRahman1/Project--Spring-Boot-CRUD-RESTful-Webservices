@@ -5,6 +5,7 @@ import com.hamidur.springBootCRUDRESTfulWebservices.repositories.AuthorRepositor
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,8 +25,20 @@ public class AuthorService
         return authorRepository.save(author);
     }
 
-    public void updateAuthor(Author author)
+    public Author updateAuthor(Author author)
     {
-        authorRepository.save(author);
+        Author newAuthor = new Author();
+
+        author.setAuthorId(author.getAuthorId());
+        author.setFirstName(author.getFirstName());
+        author.setLastName(author.getLastName());
+        author.setArticles(author.getArticles());
+
+        return authorRepository.save(newAuthor);
+    }
+
+    public List<Author> getAuthors()
+    {
+        return authorRepository.findAll();
     }
 }

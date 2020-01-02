@@ -1,11 +1,15 @@
 package com.hamidur.springBootCRUDRESTfulWebservices.dbModels;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -19,17 +23,25 @@ import java.util.Objects;
 public class Article implements Serializable
 {
     @Id
-    @Column
+    @Column(name = "article_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long articleId;
+    @Column(name = "title")
     private String title;
+    @Column(name = "body")
     private String body;
+    @Column(name = "published_date")
     private LocalDate publishedDate;
-
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
-    private Author author;
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "articles_comments",
+            joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "article_id"),
+            inverseJoinColumns = @JoinColumn(name = "comment_id", referencedColumnName = "comment_id"))
     private List<Comment> comments;
+
+    @JsonBackReference
+    @JoinColumn(name = "author_id", referencedColumnName = "author_id")
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
+    private Author author;
 
     public Long getArticleId() {
         return articleId;
@@ -37,6 +49,14 @@ public class Article implements Serializable
 
     public void setArticleId(Long articleId) {
         this.articleId = articleId;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
     public String getTitle() {
@@ -63,14 +83,6 @@ public class Article implements Serializable
         this.publishedDate = publishedDate;
     }
 
-    public Author getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(Author author) {
-        this.author = author;
-    }
-
     public List<Comment> getComments() {
         return comments;
     }
@@ -87,13 +99,12 @@ public class Article implements Serializable
         return Objects.equals(getArticleId(), article.getArticleId()) &&
                 Objects.equals(getTitle(), article.getTitle()) &&
                 Objects.equals(getBody(), article.getBody()) &&
-                Objects.equals(getPublishedDate(), article.getPublishedDate()) &&
-                Objects.equals(getAuthor(), article.getAuthor());
+                Objects.equals(getPublishedDate(), article.getPublishedDate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getArticleId(), getTitle(), getBody(), getPublishedDate(), getAuthor().getFirstName());
+        return Objects.hash(getArticleId(), getTitle(), getBody(), getPublishedDate());
     }
 
     @Override
@@ -103,7 +114,6 @@ public class Article implements Serializable
                 ", title='" + title + '\'' +
                 ", body='" + body + '\'' +
                 ", publishedDate=" + publishedDate +
-                ", author=" + author.getAuthorId() +
                 ", comments=" + comments +
                 '}';
     }

@@ -1,10 +1,15 @@
 package com.hamidur.springBootCRUDRESTfulWebservices.dbModels;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
@@ -15,13 +20,19 @@ import java.util.Objects;
 public class Author
 {
     @Id
-    @Column
+    @Column(name = "author_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long authorId;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
 
-    @OneToMany
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(name = "authors_articles",
+            joinColumns = @JoinColumn(name = "author_id", referencedColumnName = "author_id"),
+            inverseJoinColumns = @JoinColumn(name = "article_id", referencedColumnName = "article_id"))
     private List<Article> articles;
 
     public Long getAuthorId() {

@@ -13,9 +13,10 @@ import java.util.Objects;
 public class Comment
 {
     @Id
-    @Column
+    @Column(name = "comment_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
+    @Column(name = "comment")
     private String comment;
 
     public Long getCommentId() {
