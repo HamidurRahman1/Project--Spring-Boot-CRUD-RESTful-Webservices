@@ -30,7 +30,7 @@ public class Author implements Serializable
     private String lastName;
 
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "authors_articles",
             joinColumns = @JoinColumn(name = "author_id", referencedColumnName = "author_id"),
             inverseJoinColumns = @JoinColumn(name = "article_id", referencedColumnName = "article_id"))

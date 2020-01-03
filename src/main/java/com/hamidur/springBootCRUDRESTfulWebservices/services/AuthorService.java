@@ -27,12 +27,11 @@ public class AuthorService
 
     public Author updateAuthor(Author author)
     {
-        Author newAuthor = new Author();
+        Author newAuthor = authorRepository.findById(author.getAuthorId()).get();
 
-        author.setAuthorId(author.getAuthorId());
-        author.setFirstName(author.getFirstName());
-        author.setLastName(author.getLastName());
-        author.setArticles(author.getArticles());
+        newAuthor.setAuthorId(author.getAuthorId());
+        newAuthor.setFirstName(author.getFirstName());
+        newAuthor.setLastName(author.getLastName());
 
         return authorRepository.save(newAuthor);
     }
@@ -44,5 +43,10 @@ public class AuthorService
 
     public void deleteAuthor(Long authorId) {
         authorRepository.deleteById(authorId);
+    }
+
+    public void deleteAuthor(Author author)
+    {
+        authorRepository.delete(author);
     }
 }

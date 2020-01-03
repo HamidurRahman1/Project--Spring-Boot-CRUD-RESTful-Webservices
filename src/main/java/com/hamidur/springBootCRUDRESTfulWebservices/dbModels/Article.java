@@ -10,9 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -35,13 +35,13 @@ public class Article implements Serializable
     private LocalDate publishedDate;
 
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "article_id")
     private List<Comment> comments;
 
     @JsonBackReference
     @JoinColumn(name = "author_id", referencedColumnName = "author_id")
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
+    @OneToOne
     private Author author;
 
     public Long getArticleId() {

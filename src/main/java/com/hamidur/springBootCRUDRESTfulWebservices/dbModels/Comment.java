@@ -2,6 +2,7 @@ package com.hamidur.springBootCRUDRESTfulWebservices.dbModels;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,8 +22,8 @@ public class Comment implements Serializable
     @Column(name = "comment_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
-    @Column(name = "comment")
-    private String comment;
+    @Column(name = "content")
+    private String content;
 
     @JsonBackReference
     @OneToOne
@@ -45,12 +46,12 @@ public class Comment implements Serializable
         this.commentId = commentId;
     }
 
-    public String getComment() {
-        return comment;
+    public String getContent() {
+        return content;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @Override
@@ -59,19 +60,19 @@ public class Comment implements Serializable
         if (!(o instanceof Comment)) return false;
         Comment comment1 = (Comment) o;
         return Objects.equals(getCommentId(), comment1.getCommentId()) &&
-                Objects.equals(getComment(), comment1.getComment());
+                Objects.equals(getContent(), comment1.getContent());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getCommentId(), getComment());
+        return Objects.hash(getCommentId(), getContent());
     }
 
     @Override
     public String toString() {
         return "Comment{" +
                 "commentId=" + commentId +
-                ", comment='" + comment + '\'' +
+                ", content='" + content + '\'' +
                 '}';
     }
 }

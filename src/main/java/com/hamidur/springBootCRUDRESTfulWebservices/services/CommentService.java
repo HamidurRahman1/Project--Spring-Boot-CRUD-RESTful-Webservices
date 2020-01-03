@@ -1,5 +1,6 @@
 package com.hamidur.springBootCRUDRESTfulWebservices.services;
 
+import com.hamidur.springBootCRUDRESTfulWebservices.dbModels.Author;
 import com.hamidur.springBootCRUDRESTfulWebservices.dbModels.Comment;
 import com.hamidur.springBootCRUDRESTfulWebservices.repositories.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,8 @@ public class CommentService
     {
         Comment newComment = new Comment();
         newComment.setCommentId(comment.getCommentId());
-        newComment.setComment(comment.getComment());
+        newComment.setContent(comment.getContent());
+        newComment.setArticle(commentRepository.findById(comment.getCommentId()).get().getArticle());
         return commentRepository.save(newComment);
     }
 
