@@ -12,12 +12,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "authors")
-public class Author
+public class Author implements Serializable
 {
     @Id
     @Column(name = "author_id")

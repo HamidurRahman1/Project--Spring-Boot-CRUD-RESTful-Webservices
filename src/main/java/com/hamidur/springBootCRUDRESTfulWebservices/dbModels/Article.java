@@ -1,6 +1,7 @@
 package com.hamidur.springBootCRUDRESTfulWebservices.dbModels;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -32,10 +33,10 @@ public class Article implements Serializable
     private String body;
     @Column(name = "published_date")
     private LocalDate publishedDate;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "articles_comments",
-            joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "article_id"),
-            inverseJoinColumns = @JoinColumn(name = "comment_id", referencedColumnName = "comment_id"))
+
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "article_id")
     private List<Comment> comments;
 
     @JsonBackReference

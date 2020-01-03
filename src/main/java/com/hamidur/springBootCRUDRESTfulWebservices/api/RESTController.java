@@ -5,8 +5,8 @@ import com.hamidur.springBootCRUDRESTfulWebservices.dbModels.Author;
 import com.hamidur.springBootCRUDRESTfulWebservices.dbModels.Comment;
 import com.hamidur.springBootCRUDRESTfulWebservices.services.AuthorService;
 import com.hamidur.springBootCRUDRESTfulWebservices.services.ArticleService;
-
 import com.hamidur.springBootCRUDRESTfulWebservices.services.CommentService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,7 +33,7 @@ public class RESTController
     @Autowired
     private CommentService commentService;
 
-    @GetMapping(value = "/author/{authorId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/author/{authorId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Author> getAuthorById(@PathVariable Long authorId)
     {
         Author author = authorService.getAuthorById(authorId);
@@ -48,7 +48,7 @@ public class RESTController
         else return new ResponseEntity<>(authors, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/author/{authorId}/articles")
+    @GetMapping(value = "/author/{authorId}/articles", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Article>> getAllArticlesByAuthor(@PathVariable Long authorId)
     {
         List<Article> articles = authorService.getAuthorById(authorId).getArticles();
@@ -57,7 +57,7 @@ public class RESTController
         else return new ResponseEntity<>(articles, HttpStatus.OK);
     }
 
-    @PutMapping(value = "/author/update")
+    @PutMapping(value = "/author/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Author> updateAuthorById(@RequestBody Author newAuthor)
     {
         if(newAuthor == null || newAuthor.getAuthorId() == null)
@@ -96,6 +96,21 @@ public class RESTController
         return comment != null ? new ResponseEntity<>(comment, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PutMapping(value = "/comment/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Comment> updateComment(@RequestBody Comment comment)
+    {
+        if(comment == null || comment.getCommentId() == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(commentService.updateComment(comment), HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/delete/comment/{commentId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> deleteComment(@PathVariable Long commentId)
+    {
+        commentService.deleteComment(commentId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping(value = "/article/{articleId}/insertComment", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> insertComment(@RequestBody Comment incomingComment, @PathVariable Long articleId)
     {
@@ -106,16 +121,21 @@ public class RESTController
         return retrievedComment.getCommentId() != null ? new ResponseEntity<>(HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @DeleteMapping(value = "/delete/article/{articleId}")
+    @DeleteMapping(value = "/delete/article/{articleId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteArticle(@PathVariable Long articleId)
     {
         Article article = articleService.getArticleById(articleId);
-        System.out.println(article + " " + article.getAuthor().getFirstName());
         Author author = article.getAuthor();
         author.getArticles().remove(article);
         article.setAuthor(null);
         authorService.updateAuthor(author);
-//        articleService.deleteArticle(articleId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/delete/author/{authorId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> deleteAuthor(@PathVariable Long authorId)
+    {
+        authorService.deleteAuthor(authorId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

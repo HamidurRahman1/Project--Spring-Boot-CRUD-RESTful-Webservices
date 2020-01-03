@@ -23,4 +23,17 @@ public class CommentService
     {
         return commentRepository.save(comment);
     }
+
+    public Comment updateComment(Comment comment)
+    {
+        Comment newComment = new Comment();
+        newComment.setCommentId(comment.getCommentId());
+        newComment.setComment(comment.getComment());
+        return commentRepository.save(newComment);
+    }
+
+    public void deleteComment(Long commentId)
+    {
+        commentRepository.deleteById(commentId);
+    }
 }
